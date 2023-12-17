@@ -5,6 +5,8 @@ import com.kh.EcomercebackEndspringboot.Repository.UserRepository;
 import com.kh.EcomercebackEndspringboot.Entity.User;
 import com.kh.EcomercebackEndspringboot.Service_Int.UserServiceInt;
 import org.apache.tomcat.util.security.MD5Encoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +15,16 @@ import java.util.List;
 public class UserService implements UserServiceInt {
     private final UserRepository userRepository ;
 
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder=passwordEncoder;
     }
 
     // CRUD : C: Create
     public String createUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "User Created Successfully" ;
     }
@@ -47,7 +53,7 @@ public class UserService implements UserServiceInt {
         else return user ;
     }
     public User searchUserByEmail(String email)throws ResourceNotFoundException{
-        User user =  userRepository.findByEmail(email);
+        User user =  userRepository.findByEmail(email).orElse(null);
         if(user==null)
             throw new ResourceNotFoundException("User Not Found with e-mail: "+email);
         else return user ;

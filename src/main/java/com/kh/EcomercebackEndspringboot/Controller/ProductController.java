@@ -6,7 +6,6 @@ import com.kh.EcomercebackEndspringboot.Exception.ResourceNotFoundException;
 import com.kh.EcomercebackEndspringboot.Service_Int.ProductServiceInt;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +37,8 @@ public class ProductController {
                 new GlobalResponse(HttpStatus.OK.toString(),prd)
         );
     }
-
     @GetMapping("/getAllProducts")
-    public ResponseEntity<GlobalResponse> getAllProducts(){
+    public ResponseEntity<GlobalResponse> getAllProducts()throws Exception{
         return ResponseEntity.ok().body(
                 new GlobalResponse<>(HttpStatus.OK.toString(),productServiceInt.searchAllProduct())
         );
@@ -73,8 +71,6 @@ public class ProductController {
                 new GlobalResponse<>(HttpStatus.OK.toString(),products)
         );
     }
-
-
 
     @DeleteMapping("/deleteProduct/{id}")
     public ResponseEntity<GlobalResponse> deleteProduct(@PathVariable @Valid int id)throws ResourceNotFoundException{

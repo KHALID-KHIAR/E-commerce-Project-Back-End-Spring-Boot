@@ -1,6 +1,8 @@
 package com.kh.EcomercebackEndspringboot.Exception;
 
 import com.kh.EcomercebackEndspringboot.Entity.DTO.ErrorResponse;
+import com.kh.EcomercebackEndspringboot.Entity.DTO.GlobalResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,12 @@ public class ExceptionHandler_ {
         }
         return ResponseEntity.badRequest().body(
                 new ErrorResponse("400",message.toString())
+        );
+    }
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorResponse> handleExpiredJwtTokenException(ExpiredJwtException ex){
+        return  ResponseEntity.badRequest().body(
+                new ErrorResponse(HttpStatus.BAD_REQUEST.toString(),ex.getMessage())
         );
     }
     @ExceptionHandler(Exception.class)
