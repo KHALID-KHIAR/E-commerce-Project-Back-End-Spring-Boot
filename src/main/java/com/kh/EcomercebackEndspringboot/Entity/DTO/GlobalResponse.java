@@ -11,14 +11,15 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GlobalResponse<T> {
     private String Status_code ;
-    private String token ;
+//    private String token ;
     private T response ;
 
-    public GlobalResponse(String status_code,String token){
-        this.Status_code=status_code;
-        this.token=token;
-    } public GlobalResponse(String status_code,T response){
-        this.Status_code=status_code;
-        this.response=response;
-    }
+//    public GlobalResponse(String status_code,String token){
+//        this.Status_code=status_code;
+//        this.token=token;
+//    }
+//    public GlobalResponse(String status_code,T response){
+//        this.Status_code=status_code;
+//        this.response=response;
+//    }
 }

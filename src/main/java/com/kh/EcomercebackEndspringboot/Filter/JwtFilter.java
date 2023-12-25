@@ -1,6 +1,7 @@
 package com.kh.EcomercebackEndspringboot.Filter;
 
 import com.kh.EcomercebackEndspringboot.Config.ServiceCustomUserDetails;
+import com.kh.EcomercebackEndspringboot.Exception.ResourceNotFoundException;
 import com.kh.EcomercebackEndspringboot.Service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,7 +35,13 @@ public class JwtFilter extends OncePerRequestFilter {
         email=jwtService.extractEmailFromToken(token);
             if(email!=null && jwtService.validateJwtToken(token,email)){
          user = customUserDetails.loadUserByUsername(email);
-
+        if(!user.isEnabled()){
+            try {
+                throw new ResourceNotFoundException("User is disabled Please activate your Account!!!");
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
         UsernamePasswordAuthenticationToken userPassAuthToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
         userPassAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(userPassAuthToken);

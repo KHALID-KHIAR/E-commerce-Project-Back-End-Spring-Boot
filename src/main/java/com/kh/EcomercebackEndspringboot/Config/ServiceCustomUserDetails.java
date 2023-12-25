@@ -1,6 +1,7 @@
 package com.kh.EcomercebackEndspringboot.Config;
 
 import com.kh.EcomercebackEndspringboot.Entity.User;
+import com.kh.EcomercebackEndspringboot.Exception.ResourceNotFoundException;
 import com.kh.EcomercebackEndspringboot.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,9 @@ public class ServiceCustomUserDetails implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElse(null) ;
         if (user==null) {
-            throw new UsernameNotFoundException("User Not Found !!! msg from kh");
+            try{
+            throw new ResourceNotFoundException("User Not Found !!!");
+            }catch (ResourceNotFoundException e){}
         }
         return new CustomUserDetails(user);
     }

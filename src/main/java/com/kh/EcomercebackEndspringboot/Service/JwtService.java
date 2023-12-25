@@ -1,6 +1,7 @@
 package com.kh.EcomercebackEndspringboot.Service;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -10,6 +11,8 @@ import java.util.Date;
 @Service
 public class JwtService{
 
+    @Value("${JwtToken_Date_Exp}")
+    private int Jwt_Exp;
     final String secretKey= "MySec#_%re_tK3$E_312y*&%^_)it_h@oMySec#_%re_tK3$E_312y*&%^_)it_h@o?>,kh_90!2" ;
     public String generateJwtToken(String email,String role){
         String token = "";
@@ -17,7 +20,7 @@ public class JwtService{
                 .setHeaderParam("typ",Header.JWT_TYPE)
                 .signWith(generateKey(),SignatureAlgorithm.HS512)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()  + 60 * 1000 * 5))
+                .setExpiration(new Date(System.currentTimeMillis()  + 60 * 1000 * Jwt_Exp))
                 .claim("Role",role)
                 .setSubject(email).compact()
          ;

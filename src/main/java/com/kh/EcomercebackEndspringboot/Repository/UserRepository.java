@@ -1,6 +1,7 @@
 package com.kh.EcomercebackEndspringboot.Repository;
 
 import com.kh.EcomercebackEndspringboot.Entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

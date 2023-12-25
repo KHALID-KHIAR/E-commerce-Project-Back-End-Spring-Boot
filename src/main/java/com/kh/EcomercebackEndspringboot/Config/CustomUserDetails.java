@@ -15,6 +15,7 @@ public class CustomUserDetails implements UserDetails {
     private String email ;
     private String password ;
     private List roles;
+    private boolean isActive;
 
     public CustomUserDetails(){}
     public CustomUserDetails(User user){
@@ -22,6 +23,7 @@ public class CustomUserDetails implements UserDetails {
         this.password=user.getPassword();
         this.roles= Arrays.stream(user.getRole().split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList()) ;
+        this.isActive=user.isActive();
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,6 +57,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }

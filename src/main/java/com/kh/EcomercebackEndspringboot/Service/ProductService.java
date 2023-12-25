@@ -4,6 +4,8 @@ import com.kh.EcomercebackEndspringboot.Entity.Product;
 import com.kh.EcomercebackEndspringboot.Exception.ResourceNotFoundException;
 import com.kh.EcomercebackEndspringboot.Repository.ProductRepository;
 import com.kh.EcomercebackEndspringboot.Service_Int.ProductServiceInt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 @Service
 public class ProductService implements ProductServiceInt {
     private final ProductRepository productRepository;
+    private final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public  ProductService(ProductRepository pr){
         this.productRepository=pr ;
@@ -30,6 +33,7 @@ public class ProductService implements ProductServiceInt {
 
     }
     public List<Product> searchAllProduct(){
+        logger.info("All Products Have been listed !!!");
         return productRepository.findAll();}
     public Product searchByName(String name)throws ResourceNotFoundException{
         Product prd = productRepository.findByName(name) ;
@@ -38,6 +42,7 @@ public class ProductService implements ProductServiceInt {
             throw new ResourceNotFoundException("Product Not Found with name: "+name);
         else return prd;}
     public List<Product> searchByPrice(int price){
+        logger.error("GetProduct By Price Has Been done");
         List<Product> products = productRepository.findAllByPrice(price);
          return products ;
     }
